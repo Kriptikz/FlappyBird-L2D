@@ -62,6 +62,8 @@ local GROUND_SCROLL_SPEED = 60
 
 local BACKGROUND_LOOPING_POINT = 413
 
+local paused = false
+
 function love.load()
     -- initialize our nearest-neighbor filter
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -154,11 +156,29 @@ function love.mouse.wasPressed(button)
 end
 
 function love.update(dt)
-    -- scroll our background and ground, looping back to 0 after a certain amount
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
-    gStateMachine:update(dt)
+    if (love.keyboard.wasPressed('p') and gStateMachine.currentStateName == 'play') then
+        if paused then
+            -- start music
+            sounds['music']:resume()
+            
+            paused = false
+        else
+            -- stop music
+            sounds['music']:pause()
+            -- play sound effect
+
+            paused = true
+        end
+    end
+
+    if not paused then
+        -- scroll our background and ground, looping back to 0 after a certain amount
+        backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+        groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+
+        gStateMachine:update(dt)
+    end
 
     love.keyboard.keysPressed = {}
     love.mouse.buttonsPressed = {}
