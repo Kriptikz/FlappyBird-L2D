@@ -32,6 +32,18 @@ function PlayState:update(dt)
     -- update timer for pipe spawning
     self.timer = self.timer + dt
 
+    -- check for input to pause
+    if love.keyboard.wasPressed('p')then
+        -- pass in the saved data
+        gStateMachine:change('pause', {
+            bird = self.bird,
+            pipePairs = self.pipePairs,
+            timer = self.timer,
+            spawnTime = self.spawnTime,
+            score = self.score
+        })
+    end
+
     -- spawn a new pipe pair every second and a half
     if self.timer > self.spawnTime then
         -- modify the last Y coordinate we placed so pipe gaps aren't too far apart
@@ -117,9 +129,18 @@ end
 --[[
     Called when this state is transitioned to from another state.
 ]]
-function PlayState:enter()
+function PlayState:enter(params)
     -- if we're coming from death, restart scrolling
     scrolling = true
+
+    if params.wasPaused == true then
+        -- load the data from params
+        self.bird = params.bird
+        self.pipePairs = params.pipePairs
+        self.timer = params.timer
+        self.spawnTime = params.spawnTime
+        self.score = params.score
+    end
 end
 
 --[[

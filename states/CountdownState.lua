@@ -34,7 +34,9 @@ function CountdownState:update(dt)
 
         -- when 0 is reached, we should enter the PlayState
         if self.count == 0 then
-            gStateMachine:change('play')
+            gStateMachine:change('play', {
+                wasPaused = false
+            })
         end
     end
 end
