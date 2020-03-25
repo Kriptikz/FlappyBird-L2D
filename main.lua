@@ -89,7 +89,10 @@ function love.load()
         ['score'] = love.audio.newSource('score.wav', 'static'),
 
         -- https://freesound.org/people/xsgianni/sounds/388079/
-        ['music'] = love.audio.newSource('marios_way.mp3', 'static')
+        ['music'] = love.audio.newSource('marios_way.mp3', 'static'),
+
+        -- https://freesound.org/people/crisstanza/sounds/167127/
+        ['pause'] = love.audio.newSource('pause.mp3', 'static')
     }
 
     -- kick off music
@@ -167,6 +170,7 @@ function love.update(dt)
             -- stop music
             sounds['music']:pause()
             -- play sound effect
+            sounds['pause']:play()
 
             paused = true
         end
