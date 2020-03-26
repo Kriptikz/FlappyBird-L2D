@@ -194,6 +194,11 @@ function love.draw()
     love.graphics.draw(background, -backgroundScroll, 0)
     gStateMachine:render()
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
+
+    if paused then 
+        love.graphics.setFont(hugeFont)
+        love.graphics.print('PAUSED', (VIRTUAL_WIDTH / 2) - 100, VIRTUAL_HEIGHT / 2)
+    end
     
     push:finish()
 end
